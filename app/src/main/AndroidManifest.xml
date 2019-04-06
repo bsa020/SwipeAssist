@@ -12,10 +12,6 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:fullBackupContent="false"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".HamburgerMenu"
-            android:label="@string/title_activity_hamburger_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
