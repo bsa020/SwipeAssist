@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "904075537167",
+    "firebase_url": "https://swipeassist-e6bb2.firebaseio.com",
+    "project_id": "swipeassist-e6bb2",
+    "storage_bucket": "swipeassist-e6bb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904075537167:android:61a77e3802342fab",
+        "android_client_info": {
+          "package_name": "com.comp3330.swipeassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904075537167-aq463p5me8sgn6nne1vmp75jnpqb8rcm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.comp3330.swipeassist",
+            "certificate_hash": "a0c5087eb29dcc6986b8f6084b988829545aed94"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh5Ki54IghY-ZT7v69B8vY1b8zN-SkiwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904075537167-qbqf5ier5mm8oenid1fooc0h621rdkca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
