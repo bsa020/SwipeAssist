@@ -38,6 +38,43 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
+
+        int intentFragment = getIntent().getExtras().getInt("frg_to_load");
+
+        Fragment fragment = null;
+        Class fragmentClass;
+
+        switch (intentFragment){
+            case 0:
+                fragmentClass = GetFragment.class;
+                setTitle(getString(R.string.get_advice));
+                break;
+            case 1:
+                fragmentClass = GiveFragment.class;
+                setTitle(getString(R.string.give_advice));
+                break;
+            case 2:
+                fragmentClass = ViewFragment.class;
+                setTitle(getString(R.string.view_advice));
+                break;
+            default:
+                fragmentClass = GetFragment.class;
+                setTitle(getString(R.string.get_advice));
+
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
