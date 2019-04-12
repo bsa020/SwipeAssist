@@ -20,11 +20,9 @@ public class StartupScreen extends AppCompatActivity {
         } else if (view.getId() == R.id.give_button){
             intent.putExtra("frg_to_load", 1);
 
-
         } else if (view.getId() == R.id.view_button){
             intent.putExtra("frg_to_load", 2);
         }
-
         this.startActivity(intent);
 
     }
