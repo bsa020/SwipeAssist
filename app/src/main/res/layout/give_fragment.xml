@@ -12,11 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom">
+
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="500dp"
             android:layout_alignParentTop="true"
-            android:src="@drawable/img_lights"/>
+            android:layout_marginTop="0dp"
+            android:src="@drawable/img_lights" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
