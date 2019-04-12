@@ -13,12 +13,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView nvDrawer;
     private Toolbar toolbar;
+
+    //feedbackClick variables
+    RelativeLayout layout2;
+    RelativeLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawers();
     }
 
+
+
     public static class GetFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,13 +146,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class GiveFragment extends Fragment {
+        boolean isUp;
+
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.give_fragment, container, false);
+            isUp = false;
+
+            View returnView = inflater.inflate(R.layout.give_fragment, container, false);
+            Button feedbackBut = (Button) returnView.findViewById(R.id.feedback_button);
+
+            final RelativeLayout mainLayout = returnView.findViewById(R.id.relativeLayout);
+            final RelativeLayout secondLayout = returnView.findViewById(R.id.relativeLayout2);
+            feedbackBut.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    if (isUp) {
+                        mainLayout.animate().translationYBy(secondLayout.getHeight());
+                        secondLayout.animate().translationYBy(secondLayout.getHeight());
+
+                    } else {
+                        mainLayout.animate().translationYBy(-secondLayout.getHeight());
+                        secondLayout.animate().translationYBy(-secondLayout.getHeight());
+                    }
+                    isUp = !isUp;
+                }
+            });
+
+
+
+            return returnView;
         }
     }
+
 
     public static class ViewFragment extends Fragment {
         @Override
@@ -172,4 +209,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-}
+    }
