@@ -12,10 +12,37 @@
         android:layout_height="match_parent"
         android:gravity="bottom">
         <ImageView
+            android:id="@+id/imgView"
             android:layout_width="fill_parent"
-            android:layout_height="500dp"
+            android:layout_height="400dp"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+
             android:src="@drawable/img_lights"/>
+        
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgView"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="Name"/>
+        <TextView
+            android:id="@+id/occasionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameText"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="20sp"
+            android:textStyle="italic"
+
+            android:text="Occasion"/>
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
@@ -25,8 +52,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:clickable="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="24dp"
+            android:layout_alignParentBottom="true"
+
 
             app:srcCompat="@android:drawable/ic_media_previous" />
 
@@ -35,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
+
+            android:layout_marginBottom="26dp"
             android:text="@string/feedback"
             android:layout_centerVertical="true"
             android:layout_alignParentBottom="true"/>
@@ -63,10 +92,22 @@
         android:layout_marginBottom="-250dp">
 
         <TextView
+            android:id="@+id/feedbackLabel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="test"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/feedbackQ"
+            android:textSize="20sp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="5"
+            android:maxLines="10"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:hint="@string/enter_advice"
+            android:layout_below="@id/feedbackLabel"/>
     </RelativeLayout>
 
 

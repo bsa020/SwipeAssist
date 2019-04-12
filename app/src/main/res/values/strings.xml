@@ -22,4 +22,6 @@
     <string name="startup_give">In a helping mood?</string>
     <string name="startup_view">Want prior feedback?</string>
     <string name="feedback">Feedback</string>
+    <string name="feedbackQ">Detailed feedback to give:</string>
+    <string name="enter_advice">Enter your advice here</string>
 </resources>
