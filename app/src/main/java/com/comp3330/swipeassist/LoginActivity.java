@@ -26,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     createSignInIntent();
     }
 
-
-
     public void createSignInIntent() {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -54,6 +52,14 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Intent intent = new Intent(this, StartupScreen.class);
+                if (user != null){
+                    String email = user.getEmail();
+                    String name = user.getDisplayName();
+                    intent.putExtra("userEmail", email);
+                    intent.putExtra("userName", name);
+                }
+                startActivity(intent);
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the

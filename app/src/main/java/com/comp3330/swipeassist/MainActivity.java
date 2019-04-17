@@ -23,12 +23,15 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
     private Toolbar toolbar;
     private static final int RC_SIGN_IN = 443;
+    private String userEmail = "";
+    private String userName = "";
     private FirebaseAuth mAuth;
 
-    //feedbackClick variables
-    RelativeLayout layout2;
-    RelativeLayout mainLayout;
+    TextView name;
+    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(@NonNull View view) {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
 
             @Override
@@ -82,10 +86,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Find our drawer view
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+
         // Setup drawer view
-        setupDrawerContent(nvDrawer);
 
         int intentFragment = getIntent().getExtras().getInt("frg_to_load");
+        userEmail = getIntent().getExtras().getString("userEmail");
+        userName = getIntent().getExtras().getString("userName");
+
+        setupDrawerContent(nvDrawer);
+
+
 
         Fragment fragment = null;
         Class fragmentClass;
@@ -119,51 +129,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
+        // set navigation header values
+        View header = nvDrawer.getHeaderView(0);
+        name = (TextView) header.findViewById(R.id.nav_head_username);
+        name.setText(userName);
 
+        email = (TextView) header.findViewById(R.id.nav_head_email);
+        email.setText(userEmail);
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        createSignInIntent();
-    }
-
-    public void createSignInIntent() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-        // [END auth_fui_create_intent]
-    }
-
-    // [START auth_fui_result]
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -210,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
+
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
@@ -221,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
+
             return inflater.inflate(R.layout.get_fragment, container, false);
         }
     }
