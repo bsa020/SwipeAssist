@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -144,10 +146,19 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        if (menuItem.getItemId() == R.id.sign_out){
+                            FirebaseAuth.getInstance().signOut();
+                            backtoStartup();
+                        }
+                        else selectDrawerItem(menuItem);
                         return true;
                     }
                 });
+    }
+
+    private void backtoStartup(){
+        Intent startUpIntent = new Intent(this, LoginActivity.class);
+        this.startActivity(startUpIntent);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
