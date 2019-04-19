@@ -1,7 +1,8 @@
 package com.comp3330.swipeassist;
 
-import android.content.Intent;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -19,26 +19,15 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null;
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
@@ -89,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        nvDrawer = findViewById(R.id.nav_view);
 
         // Setup drawer view
 
-        int intentFragment = getIntent().getExtras().getInt("frg_to_load");
+        int intentFragment = Objects.requireNonNull(getIntent().getExtras()).getInt("frg_to_load");
         userEmail = getIntent().getExtras().getString("userEmail");
         userName = getIntent().getExtras().getString("userName");
 
@@ -131,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, Objects.requireNonNull(fragment)).commit();
 
         // set navigation header values
         View header = nvDrawer.getHeaderView(0);
-        name = (TextView) header.findViewById(R.id.nav_head_username);
+        name = header.findViewById(R.id.nav_head_username);
         name.setText(userName);
 
-        email = (TextView) header.findViewById(R.id.nav_head_email);
+        email = header.findViewById(R.id.nav_head_email);
         email.setText(userEmail);
 
     }
@@ -147,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         if (menuItem.getItemId() == R.id.sign_out){
                             //FirebaseAuth.getInstance().signOut();
                             authUiSignout();
@@ -196,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, Objects.requireNonNull(fragment)).commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -211,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class GetFragment extends Fragment {
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
 
@@ -226,14 +216,14 @@ public class MainActivity extends AppCompatActivity {
         private GestureDetectorCompat gestureDetectorCompat = null;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             isUp = false;
 
 
             View returnView = inflater.inflate(R.layout.give_fragment, container, false);
-            Button feedbackBut = (Button) returnView.findViewById(R.id.feedback_button);
+            Button feedbackBut = returnView.findViewById(R.id.feedback_button);
 
             final RelativeLayout mainLayout = returnView.findViewById(R.id.relativeLayout);
             final RelativeLayout secondLayout = returnView.findViewById(R.id.relativeLayout2);
@@ -294,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
             returnView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    v.performClick();
                     return gesture.onTouchEvent(event);
                 }
             });
@@ -306,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class ViewFragment extends Fragment {
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             return inflater.inflate(R.layout.view_fragment, container, false);
@@ -315,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends Fragment {
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             return inflater.inflate(R.layout.settings_fragment, container, false);
@@ -324,10 +315,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
