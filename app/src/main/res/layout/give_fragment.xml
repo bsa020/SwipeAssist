@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom">
         <ImageView
-            android:id="@+id/imgView"
+            android:id="@+id/giveImg"
             android:layout_width="fill_parent"
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
             android:id="@+id/nameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgView"
+            android:layout_below="@id/giveImg"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:textSize="40sp"

@@ -22,10 +22,12 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             isUp = false;
+
 
             View returnView = inflater.inflate(R.layout.give_fragment, container, false);
             Button feedbackBut = (Button) returnView.findViewById(R.id.feedback_button);
