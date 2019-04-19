@@ -1,12 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="40dp">
+
+
+    <EditText
+        android:id="@+id/editNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="@string/name_label"
+        android:inputType="textPersonName" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="get_fragment"
-        />
+        android:id="@+id/categoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editNameText"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/category_label"
+        android:textSize="18sp" />
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_text"
+        android:layout_below="@id/editNameText"
+        android:layout_alignEnd="@id/editNameText"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp">
+    </Spinner>
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/editOccasionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/occasion_label"
+        android:layout_below="@id/categoryLabel"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/occasionPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/occasion_prompt"
+        android:layout_marginEnd="40dp"
+        android:layout_below="@id/editOccasionText"/>
+    <RelativeLayout
+        android:id="@+id/upload_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/occasionPrompt"
+        android:layout_marginTop="40dp"
+        android:layout_alignStart="@id/occasionPrompt"
+        android:layout_alignEnd="@id/occasionPrompt">
+
+        <TextView
+            android:id="@+id/picturePrompt"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:text="@string/upload_picture_prompt"
+            android:textSize="30sp"
+            android:textStyle="italic" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/picturePrompt"
+            android:clickable="true"
+            android:onClick="onClick"
+            app:srcCompat="@android:drawable/ic_menu_upload" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imageButton">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="86dp"
+                android:layout_height="184dp"
+                />
+
+            <TextView
+                android:id="@+id/myImageViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageView"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:text="@string/image_preview" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/upload_layout"
+        android:text="@string/upload_info"/>
+
+
+
+</RelativeLayout>

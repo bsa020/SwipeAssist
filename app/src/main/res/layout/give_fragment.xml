@@ -30,7 +30,7 @@
             android:layout_marginRight="30dp"
             android:textSize="40sp"
             android:textStyle="bold"
-            android:text="Name"/>
+            android:text="@string/name_text_label"/>
         <TextView
             android:id="@+id/occasionText"
             android:layout_width="match_parent"

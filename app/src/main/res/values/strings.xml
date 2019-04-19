@@ -25,4 +25,13 @@
     <string name="feedbackQ">Detailed feedback to give:</string>
     <string name="enter_advice">Enter your advice here</string>
     <string name="sign_out">Sign out</string>
+    <string name="name_label">First Name</string>
+    <string name="occasion_label">Occasion</string>
+    <string name="occasion_prompt">What specific event are you attending? Some examples: wedding, bar mitzvah, job interview, etc. You can also just put \"fashion\" for general fashion advice.</string>
+    <string name="spinner_text">Category</string>
+    <string name="category_label">Category</string>
+    <string name="name_text_label">Name</string>
+    <string name="upload_picture_prompt">Upload your picture here!</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="upload_info">Upload!</string>
 </resources>
