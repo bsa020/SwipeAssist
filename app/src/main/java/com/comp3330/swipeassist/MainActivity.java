@@ -149,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         if (menuItem.getItemId() == R.id.sign_out){
-                            FirebaseAuth.getInstance().signOut();
+                            //FirebaseAuth.getInstance().signOut();
+                            authUiSignout();
                             backtoStartup();
                         }
                         else selectDrawerItem(menuItem);
@@ -158,8 +159,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void authUiSignout() {
+        AuthUI.getInstance().signOut(this);
+    }
     private void backtoStartup(){
-        Intent startUpIntent = new Intent(this, LoginActivity.class);
+        Intent startUpIntent = new Intent(MainActivity.this, LoginActivity.class);
         this.startActivity(startUpIntent);
     }
 
