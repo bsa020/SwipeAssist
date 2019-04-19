@@ -1,11 +1,11 @@
 package com.comp3330.swipeassist;
 
-import android.content.Intent;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,22 +30,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        nvDrawer = findViewById(R.id.nav_view);
 
         // Setup drawer view
 
@@ -145,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
         // set navigation header values
         View header = nvDrawer.getHeaderView(0);
-        name = (TextView) header.findViewById(R.id.nav_head_username);
+        name = header.findViewById(R.id.nav_head_username);
         name.setText(userName);
 
-        email = (TextView) header.findViewById(R.id.nav_head_email);
+        email = header.findViewById(R.id.nav_head_email);
         email.setText(userEmail);
 
 
@@ -225,15 +212,15 @@ public class MainActivity extends AppCompatActivity {
             // Inflate the layout for this fragment
             View v = inflater.inflate(R.layout.get_fragment, container, false);
             // set spinner values
-            Spinner spinner = (Spinner) v.findViewById(R.id.categorySpinner);
+            Spinner spinner = v.findViewById(R.id.categorySpinner);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_item, paths);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
 
-            imageView = (ImageView) v.findViewById(R.id.imageView);
+            imageView = v.findViewById(R.id.imageView);
 
-            ImageButton imageButton = (ImageButton) v.findViewById(R.id.imageButton);
+            ImageButton imageButton = v.findViewById(R.id.imageButton);
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -280,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 isUp = false;
 
                 View returnView = inflater.inflate(R.layout.give_fragment, container, false);
-                Button feedbackBut = (Button) returnView.findViewById(R.id.feedback_button);
+                Button feedbackBut = returnView.findViewById(R.id.feedback_button);
 
                 final RelativeLayout mainLayout = returnView.findViewById(R.id.relativeLayout);
                 final RelativeLayout secondLayout = returnView.findViewById(R.id.relativeLayout2);
