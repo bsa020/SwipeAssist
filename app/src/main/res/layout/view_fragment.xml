@@ -1,11 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
+        android:id="@+id/advice_prompt"
+        android:layout_width="310dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center_horizontal"
+
+        android:text="@string/advice_prompt"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/advice_table"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="view_fragment"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/advice_prompt">
+
+        <LinearLayout
+            android:id="@+id/entry1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="200dp"
+                android:src="@drawable/img_lights"
+                android:layout_marginEnd="20dp"/>
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="0,1"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Uploaded xx/xx/xxxx"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Occasion: climbing Mt. Everest"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/upTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="3"
+                        android:textSize="30sp"
+                        android:layout_margin="1dp"
+                        android:layout_column="0"
+                        android:gravity="center_vertical"
+                        android:drawableEnd="@drawable/thumbs_up"
+                        android:drawablePadding="0dp"
+                        />
+                    <TextView
+                        android:id="@+id/downTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="2"
+                        android:textSize="30sp"
+                        android:layout_margin="1dp"
+                        android:layout_column="1"
+                        android:gravity="center_vertical"
+                        android:drawableEnd="@drawable/thumbs_down"
+                        android:drawablePadding="2dp"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="26dp"
+                        />
+                </TableRow>
+                <Button
+                    android:id="@+id/detailed_feedback_button"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:text="@string/detailed_feedback"
+                    />
+            </TableLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

@@ -3,7 +3,7 @@
 
     <string name="get_advice">Get advice</string>
     <string name="give_advice">Give advice</string>
-    <string name="view_advice">View advice</string>
+    <string name="view_advice">Advice Portal</string>
     <string name="settings">Settings</string>
     <string name="startup_get">Need a helping hand?</string>
     <string name="startup_give">In a helping mood?</string>
@@ -21,4 +21,6 @@
     <string name="upload_picture_prompt">Upload your picture here!</string>
     <string name="image_preview">Image Preview</string>
     <string name="upload_info">Upload!</string>
+    <string name="advice_prompt">If you have received advice, it will show up below:</string>
+    <string name="detailed_feedback">Detailed Feedback</string>
 </resources>

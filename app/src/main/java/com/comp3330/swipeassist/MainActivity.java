@@ -343,7 +343,13 @@ public class MainActivity extends AppCompatActivity {
             public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                      Bundle savedInstanceState) {
                 // Inflate the layout for this fragment
-                return inflater.inflate(R.layout.view_fragment, container, false);
+                View v = inflater.inflate(R.layout.view_fragment, container, false);
+
+                TextView upText = v.findViewById(R.id.upTextView);
+                TextView downText = v.findViewById(R.id.downTextView);
+                //upText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.thumbs_up, 0);
+                //downText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.thumbs_down,0);
+                return v;
             }
         }
 
