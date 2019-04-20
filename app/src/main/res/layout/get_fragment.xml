@@ -11,7 +11,7 @@
         android:id="@+id/editNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="@string/name_label"
         android:inputType="textPersonName" />
@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/editNameText"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/category_label"
         android:textSize="18sp" />
     <Spinner
@@ -32,8 +32,8 @@
         android:text="@string/spinner_text"
         android:layout_below="@id/editNameText"
         android:layout_alignEnd="@id/editNameText"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
     </Spinner>
 
     <EditText
@@ -43,70 +43,65 @@
         android:ems="10"
         android:hint="@string/occasion_label"
         android:layout_below="@id/categoryLabel"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:id="@+id/occasionPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/occasion_prompt"
-        android:layout_marginEnd="40dp"
-        android:layout_below="@id/editOccasionText"/>
+        android:layout_alignEnd="@id/editOccasionText"
+        android:layout_below="@id/editOccasionText"
+        android:layout_marginBottom="20dp"/>
+
     <RelativeLayout
-        android:id="@+id/upload_layout"
+        android:id="@+id/image_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/occasionPrompt"
-        android:layout_marginTop="40dp"
-        android:layout_alignStart="@id/occasionPrompt"
-        android:layout_alignEnd="@id/occasionPrompt">
+        android:layout_toEndOf="@id/occasionPrompt"
+        android:layout_alignTop="@id/occasionPrompt"
+        android:layout_marginStart="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="200dp" />
 
         <TextView
-            android:id="@+id/picturePrompt"
-            android:layout_width="178dp"
-            android:layout_height="wrap_content"
-            android:lines="2"
-            android:text="@string/upload_picture_prompt"
-            android:textSize="30sp"
-            android:textStyle="italic" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/myImageViewText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@id/picturePrompt"
-            android:clickable="true"
-            android:onClick="onClick"
-            app:srcCompat="@android:drawable/ic_menu_upload" />
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/imageButton">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="86dp"
-                android:layout_height="184dp"
-                />
-
-            <TextView
-                android:id="@+id/myImageViewText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imageView"
-                android:layout_marginStart="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:gravity="center"
-                android:text="@string/image_preview" />
-        </RelativeLayout>
+            android:text="@string/image_preview" />
     </RelativeLayout>
+
     <Button
-        android:layout_width="100dp"
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose picture"
+
+        android:layout_below="@id/occasionPrompt"
+        android:layout_alignLeft="@+id/occasionPrompt"
+        android:layout_alignRight="@+id/occasionPrompt"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        />
+
+    <Button
+        android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_below="@id/upload_layout"
+        android:layout_marginTop="30dp"
+        android:textSize="36sp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/image_layout"
         android:text="@string/upload_info"/>
 
 
