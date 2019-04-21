@@ -25,23 +25,32 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
-
     private DrawerLayout drawerLayout;
     private NavigationView nvDrawer;
     private Toolbar toolbar;
     private Spinner spinner;
-    private static final String[] paths = {"Fashion", "Fitness", "item 3"};
+    private static final String[] paths = {"Fashion", "Formal", "Night out", "Outdoors", "Sports"};
     private static final int RC_SIGN_IN = 443;
     private String userEmail = "";
     private String userName = "";
@@ -203,7 +212,10 @@ public class MainActivity extends AppCompatActivity {
     public static class GetFragment extends Fragment {
         public static final int GET_FROM_GALLERY = 3330;
         ImageView imageView;
-
+        private Uri filePath;
+        FirebaseStorage storage;
+        StorageReference storageReference;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             // Inflate the layout for this fragment
             View v = inflater.inflate(R.layout.get_fragment, container, false);
             // set spinner values
-            Spinner spinner = v.findViewById(R.id.categorySpinner);
+            final Spinner spinner = v.findViewById(R.id.categorySpinner);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                     android.R.layout.simple_spinner_item, paths);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -232,6 +244,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            final EditText editNameText = v.findViewById(R.id.editNameText);
+            final EditText editOccasionText = v.findViewById(R.id.editOccasionText);
+            Button uploadButton = v.findViewById(R.id.uploadButton);
+            uploadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("first_name", editNameText.getText().toString());
+                        user.put("category", spinner.getSelectedItem().toString());
+                        user.put("occasion", editOccasionText.getText().toString());
+                        Task<Uri> img = uploadImage();
+                        assert img != null;
+                        user.put("imageURL", img.toString());
+                        db.collection("swipe_assist").document("test2")
+                                .set(user)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(), "Uploaded!", Toast.LENGTH_SHORT).show();
+                                        editNameText.setText("");
+                                        editOccasionText.setText("");
+                                        imageView.setImageDrawable(null);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
             return v;
         }
 
@@ -239,17 +290,37 @@ public class MainActivity extends AppCompatActivity {
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             //Detects request codes
             if (requestCode == GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+                filePath = data.getData();
 
                 try {
-                    final Uri imageUri = data.getData();
-                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(filePath);
                     final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                     imageView.setImageBitmap(selectedImage);
                 } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
+        }
+
+        private Task<Uri> uploadImage() {
+            if(filePath != null) {
+                StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+                ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                return ref.getDownloadUrl();
+            }
+            return null;
         }
     }
 
