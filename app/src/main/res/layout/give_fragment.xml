@@ -20,7 +20,7 @@
             android:layout_marginRight="30dp"
 
             android:src="@drawable/img_lights"/>
-        
+
         <TextView
             android:id="@+id/nameText"
             android:layout_width="match_parent"
