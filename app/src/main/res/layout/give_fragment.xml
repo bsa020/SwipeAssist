@@ -19,7 +19,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
 
-            android:src="@drawable/img_lights"/>
+            android:src="@drawable/img_lights"
+            android:visibility="invisible"/>
         
         <TextView
             android:id="@+id/nameText"
@@ -30,7 +31,8 @@
             android:layout_marginRight="30dp"
             android:textSize="40sp"
             android:textStyle="bold"
-            android:text="@string/name_text_label"/>
+            android:text="@string/name_text_label"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/occasionText"
             android:layout_width="match_parent"
@@ -41,7 +43,8 @@
             android:textSize="20sp"
             android:textStyle="italic"
 
-            android:text="Occasion"/>
+            android:text="Occasion"
+            android:visibility="invisible"/>
 
 
         <android.support.design.widget.FloatingActionButton

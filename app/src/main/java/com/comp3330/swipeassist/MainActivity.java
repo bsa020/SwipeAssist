@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,18 +30,29 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,9 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinner;
     private static final String[] paths = {"Fashion", "Formal", "Night out", "Outdoors", "Sports"};
     private static final int RC_SIGN_IN = 443;
-    private String userEmail = "";
+    private static String userEmail = "";
     private String userName = "";
     private FirebaseAuth mAuth;
+
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
 
     TextView name;
     TextView email;
@@ -145,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
         email = header.findViewById(R.id.nav_head_email);
         email.setText(userEmail);
-
-
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -255,14 +266,12 @@ public class MainActivity extends AppCompatActivity {
                         user.put("first_name", editNameText.getText().toString());
                         user.put("category", spinner.getSelectedItem().toString());
                         user.put("occasion", editOccasionText.getText().toString());
-                        Task<Uri> img = uploadImage();
-                        assert img != null;
-                        user.put("imageURL", img.toString());
-                        db.collection("swipe_assist").document("test2")
-                                .set(user)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        String path = uploadImage();
+                        user.put("imagePath", path);
+                        db.collection("swipe_assist").add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
+                                    public void onSuccess(DocumentReference documentReference) {
                                         Toast.makeText(getActivity(), "Uploaded!", Toast.LENGTH_SHORT).show();
                                         editNameText.setText("");
                                         editOccasionText.setText("");
@@ -302,9 +311,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private Task<Uri> uploadImage() {
+        private String uploadImage() {
+            String randomUUID;
+            String path;
             if(filePath != null) {
-                StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+                randomUUID = UUID.randomUUID().toString();
+                path = "images/"+ randomUUID;
+                StorageReference ref = storageReference.child(path);
                 ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -318,17 +331,31 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                return ref.getDownloadUrl();
+                return path;
             }
             return null;
         }
+
+    }
+
+    public static String randomString( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+
+        return sb.toString();
     }
 
         public static class GiveFragment extends Fragment {
             boolean isUp;
 
-            // This is the gesture detector compat instance.
-            private GestureDetectorCompat gestureDetectorCompat = null;
+            // pick random image
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            TextView nameText;
+            TextView occasionText;
+            ImageView giveImg;
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReference();
 
             @Override
             public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -338,6 +365,9 @@ public class MainActivity extends AppCompatActivity {
 
                 View returnView = inflater.inflate(R.layout.give_fragment, container, false);
                 Button feedbackBut = returnView.findViewById(R.id.feedback_button);
+                nameText = returnView.findViewById(R.id.nameText);
+                occasionText = returnView.findViewById(R.id.occasionText);
+                giveImg = returnView.findViewById(R.id.giveImg);
 
                 final RelativeLayout mainLayout = returnView.findViewById(R.id.relativeLayout);
                 final RelativeLayout secondLayout = returnView.findViewById(R.id.relativeLayout2);
@@ -356,22 +386,31 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 final GestureDetector gesture = new GestureDetector(getActivity(),
-                        new GestureDetector.SimpleOnGestureListener() {
+                    new GestureDetector.SimpleOnGestureListener() {
+                        @Override
+                        public boolean onDown(MotionEvent e) {
+                            return true;
+                        }
 
-                            @Override
-                            public boolean onDown(MotionEvent e) {
-                                return true;
-                            }
-
-                            @Override
-                            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                                                   float velocityY) {
-                                final int SWIPE_MIN_DISTANCE = 120;
-                                final int SWIPE_MAX_OFF_PATH = 250;
-                                final int SWIPE_THRESHOLD_VELOCITY = 200;
-                                try {
-                                    if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH)
-                                        return false;
+                        @Override
+                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                               float velocityY) {
+                            final int SWIPE_MIN_DISTANCE = 120;
+                            final int SWIPE_MAX_OFF_PATH = 250;
+                            final int SWIPE_THRESHOLD_VELOCITY = 200;
+                            try {
+                                // swiping left or right
+                                if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH){
+                                    // swiping left
+                                    if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+                                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                                        // TO DO: IMPLEMENT SWIPE UP AND DOWN LOGIC!!!
+                                    }
+                                    // swiping right
+                                }
+                                // swiping up or down with enough velocity
+                                else {
+                                    // swiping up
                                     if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
                                             && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                                         if (!isUp) {
@@ -379,21 +418,23 @@ public class MainActivity extends AppCompatActivity {
                                             secondLayout.animate().translationYBy(-secondLayout.getHeight());
                                             isUp = !isUp;
                                         }
-                                    } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
+                                    }
+                                    // swiping down
+                                    else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
                                             && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                                         if (isUp) {
                                             mainLayout.animate().translationYBy(secondLayout.getHeight());
                                             secondLayout.animate().translationYBy(secondLayout.getHeight());
                                             isUp = !isUp;
                                         }
-
                                     }
-                                } catch (Exception e) {
-                                    // nothing
                                 }
-                                return super.onFling(e1, e2, velocityX, velocityY);
+                            } catch (Exception e) {
+                                // nothing
                             }
-                        });
+                            return super.onFling(e1, e2, velocityX, velocityY);
+                        }
+                    });
 
                 returnView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -401,12 +442,43 @@ public class MainActivity extends AppCompatActivity {
                         return gesture.onTouchEvent(event);
                     }
                 });
-
+                setNewPicture();
                 return returnView;
             }
 
-        }
+            private void setNewPicture(){
+                String randomID = randomString(20);
+                CollectionReference collRef = db.collection("swipe_assist");
+                Query queryRef = collRef.whereGreaterThan(FieldPath.documentId(), randomID).limit(1);
 
+                queryRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult() != null) {
+                            // will only run once - only one document is queried
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> data = document.getData();
+                                nameText.setText(data.get("first_name").toString());
+                                occasionText.setText(data.get("occasion").toString());
+
+                                StorageReference pathReference = storageReference.child(data.get("imagePath").toString());
+                                Glide.with(Objects.requireNonNull(getContext()))
+                                        .load(pathReference)
+                                        .into(giveImg);
+                                nameText.setVisibility(View.VISIBLE);
+                                occasionText.setVisibility(View.VISIBLE);
+                                giveImg.setVisibility(View.VISIBLE);
+
+                            }
+                        }
+                        // if queryRef is null still then restart the function call
+                        else{
+                            setNewPicture();
+                        }
+                    }
+                });
+            }
+        }
 
         public static class ViewFragment extends Fragment {
             @Override
@@ -415,10 +487,6 @@ public class MainActivity extends AppCompatActivity {
                 // Inflate the layout for this fragment
                 View v = inflater.inflate(R.layout.view_fragment, container, false);
 
-                TextView upText = v.findViewById(R.id.upTextView);
-                TextView downText = v.findViewById(R.id.downTextView);
-                //upText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.thumbs_up, 0);
-                //downText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.thumbs_down,0);
                 return v;
             }
         }
