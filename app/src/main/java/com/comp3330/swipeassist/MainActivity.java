@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -51,8 +53,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -356,6 +360,9 @@ public class MainActivity extends AppCompatActivity {
             ImageView giveImg;
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageReference = storage.getReference();
+            // path reference to last and curr image
+            DocumentSnapshot currDocSnap;
+            DocumentSnapshot lastDocSnap;
 
             @Override
             public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -365,6 +372,9 @@ public class MainActivity extends AppCompatActivity {
 
                 View returnView = inflater.inflate(R.layout.give_fragment, container, false);
                 Button feedbackBut = returnView.findViewById(R.id.feedback_button);
+                FloatingActionButton leftSkipButton = returnView.findViewById(R.id.skipLeftButton);
+                FloatingActionButton rightSkipButton = returnView.findViewById(R.id.skipRightButton);
+
                 nameText = returnView.findViewById(R.id.nameText);
                 occasionText = returnView.findViewById(R.id.occasionText);
                 giveImg = returnView.findViewById(R.id.giveImg);
@@ -382,6 +392,44 @@ public class MainActivity extends AppCompatActivity {
                             secondLayout.animate().translationYBy(-secondLayout.getHeight());
                         }
                         isUp = !isUp;
+                    }
+                });
+
+                leftSkipButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Going back", Toast.LENGTH_SHORT).show();
+
+                        if (isUp) {
+                            mainLayout.animate().translationYBy(secondLayout.getHeight());
+                            secondLayout.animate().translationYBy(secondLayout.getHeight());
+                            isUp = !isUp;
+                        }
+
+                        // going back a picture
+                        DocumentSnapshot documentToLoad = lastDocSnap;
+                        currDocSnap = lastDocSnap;
+                        // can only go back one picture, not multiple
+                        lastDocSnap = null;
+
+                        nameText.setText(documentToLoad.get("first_name").toString());
+                        occasionText.setText(documentToLoad.get("occasion").toString());
+                        StorageReference pathReference = storageReference.child(documentToLoad.get("imagePath").toString());
+                        Glide.with(Objects.requireNonNull(getContext()))
+                                .load(pathReference)
+                                .into(giveImg);
+                    }
+                });
+
+                rightSkipButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Skipping this picture", Toast.LENGTH_SHORT).show();
+
+                        if (isUp) {
+                            mainLayout.animate().translationYBy(secondLayout.getHeight());
+                            secondLayout.animate().translationYBy(secondLayout.getHeight());
+                            isUp = !isUp;
+                        }
+                        setNewPicture();
                     }
                 });
 
@@ -404,9 +452,17 @@ public class MainActivity extends AppCompatActivity {
                                     // swiping left
                                     if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
                                         && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                                        // TO DO: IMPLEMENT SWIPE UP AND DOWN LOGIC!!!
+                                        // TO DO: IMPLEMENT THUMBS UP AND DOWN LOGIC!!!
+                                        Toast.makeText(getActivity(), "You gave a thumbs down", Toast.LENGTH_SHORT).show();
+                                        setNewPicture();
                                     }
                                     // swiping right
+                                    else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+                                            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                                        // TO DO: IMPLEMENT THUMBS UP AND DOWN LOGIC!!!
+                                        Toast.makeText(getActivity(), "You gave a thumbs up", Toast.LENGTH_SHORT).show();
+                                        setNewPicture();
+                                    }
                                 }
                                 // swiping up or down with enough velocity
                                 else {
@@ -449,27 +505,31 @@ public class MainActivity extends AppCompatActivity {
             private void setNewPicture(){
                 String randomID = randomString(20);
                 CollectionReference collRef = db.collection("swipe_assist");
-                Query queryRef = collRef.whereGreaterThan(FieldPath.documentId(), randomID).limit(1);
+                Query queryRef = collRef.whereGreaterThan(FieldPath.documentId(), randomID);
 
                 queryRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.getResult() != null) {
+                        if (task.getResult() != null && task.getResult().size() >= 1) {
+
                             // will only run once - only one document is queried
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> data = document.getData();
-                                nameText.setText(data.get("first_name").toString());
-                                occasionText.setText(data.get("occasion").toString());
+                            List<DocumentSnapshot> list = task.getResult().getDocuments();
+                            Random rand = new Random();
+                            DocumentSnapshot documentPicked = list.get(rand.nextInt(list.size()));
 
-                                StorageReference pathReference = storageReference.child(data.get("imagePath").toString());
-                                Glide.with(Objects.requireNonNull(getContext()))
-                                        .load(pathReference)
-                                        .into(giveImg);
-                                nameText.setVisibility(View.VISIBLE);
-                                occasionText.setVisibility(View.VISIBLE);
-                                giveImg.setVisibility(View.VISIBLE);
+                            nameText.setText(documentPicked.get("first_name").toString());
+                            occasionText.setText(documentPicked.get("occasion").toString());
 
-                            }
+                            StorageReference pathReference = storageReference.child(documentPicked.get("imagePath").toString());
+
+                            Glide.with(Objects.requireNonNull(getContext()))
+                                    .load(pathReference)
+                                    .into(giveImg);
+                            nameText.setVisibility(View.VISIBLE);
+                            occasionText.setVisibility(View.VISIBLE);
+                            giveImg.setVisibility(View.VISIBLE);
+                            lastDocSnap = currDocSnap;
+                            currDocSnap = documentPicked;
                         }
                         // if queryRef is null still then restart the function call
                         else{
