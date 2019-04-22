@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
     private Toolbar toolbar;
     private Spinner spinner;
-    private static final String[] paths = {"Fashion", "Formal", "Night out", "Outdoors", "Sports"};
+    private static final String[] paths = {"Cultural", "Fashion", "Formal", "Night out", "Outdoors", "Sports"};
     private static final int RC_SIGN_IN = 443;
     private static String userEmail = "";
     private String userName = "";
@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         userName = getIntent().getExtras().getString("userName");
 
         setupDrawerContent(nvDrawer);
-
 
         Fragment fragment = null;
         Class fragmentClass;
@@ -222,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
-
 
     public static class GetFragment extends Fragment {
         public static final int GET_FROM_GALLERY = 3330;
@@ -339,7 +337,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-
     }
 
     public static String randomString( int len ){
@@ -358,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
             TextView nameText;
             TextView occasionText;
             ImageView giveImg;
+            EditText detailedFeedbackInput;
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageReference = storage.getReference();
             // path reference to last and curr image
@@ -378,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 nameText = returnView.findViewById(R.id.nameText);
                 occasionText = returnView.findViewById(R.id.occasionText);
                 giveImg = returnView.findViewById(R.id.giveImg);
+                detailedFeedbackInput = returnView.findViewById(R.id.detailed_feedback_input);
 
                 final RelativeLayout mainLayout = returnView.findViewById(R.id.relativeLayout);
                 final RelativeLayout secondLayout = returnView.findViewById(R.id.relativeLayout2);
@@ -528,6 +527,7 @@ public class MainActivity extends AppCompatActivity {
                             nameText.setVisibility(View.VISIBLE);
                             occasionText.setVisibility(View.VISIBLE);
                             giveImg.setVisibility(View.VISIBLE);
+                            detailedFeedbackInput.setText("");
                             lastDocSnap = currDocSnap;
                             currDocSnap = documentPicked;
                         }
