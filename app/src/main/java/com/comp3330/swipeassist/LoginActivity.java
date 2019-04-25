@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar)
-                        .setLogo(R.drawable.logo_sa)
+                        .setTheme(R.style.Theme_MaterialComponents_NoActionBar)
+                        .setLogo(R.drawable.logo_white)
                         .build(),
                 RC_SIGN_IN);
         // [END auth_fui_create_intent]
