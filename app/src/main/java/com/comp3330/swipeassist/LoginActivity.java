@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
                         .setTheme(R.style.Theme_MaterialComponents_NoActionBar)
                         .setLogo(R.drawable.logo_white)
                         .build(),
