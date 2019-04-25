@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(R.drawable.logo_white );
+        //getSupportActionBar().setIcon(R.drawable.logo_white );
         setSupportActionBar(toolbar);
 
         ActionBar actionbar = getSupportActionBar();

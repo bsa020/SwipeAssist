@@ -20,7 +20,7 @@
     <string name="name_text_label">Name</string>
     <string name="upload_picture_prompt">Upload your picture here!</string>
     <string name="image_preview">Image Preview</string>
-    <string name="upload_info">Upload!</string>
+    <string name="upload_info">Share</string>
     <string name="advice_prompt">If you have received advice, it will show up below:</string>
     <string name="detailed_feedback">Detailed Feedback</string>
 </resources>

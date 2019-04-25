@@ -56,19 +56,19 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="161dp"
-                android:layout_height="34dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="171dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="Uploaded 18/04/2019"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/advice_table"
                 app:layout_constraintEnd_toStartOf="@+id/textView2"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.347"
                 app:layout_constraintStart_toStartOf="@+id/imageView3"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_feedback_button"
-                app:layout_constraintVertical_bias="0.045" />
+                app:layout_constraintVertical_bias="0.091" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -79,7 +79,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
-                android:text="Occasion: climbing Mt. Everest"
+                android:text="Occasion: Climbing Mt. Everest"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,9 +91,9 @@
 
             <TextView
                 android:id="@+id/upTextView"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="69dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
                 android:drawableEnd="@drawable/thumbs_up"
@@ -104,12 +104,12 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                 app:layout_constraintStart_toEndOf="@+id/detailed_feedback_button"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.071" />
 
             <TextView
                 android:id="@+id/downTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="115dp"
+                android:layout_height="49dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -118,7 +118,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="30dp"
                 android:paddingEnd="26dp"
-                android:text="13"
+                android:text="9"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -128,15 +128,15 @@
 
             <Button
                 android:id="@+id/detailed_feedback_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="169dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="44dp"
                 android:text="@string/detailed_feedback"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imageView3"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.236" />
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
