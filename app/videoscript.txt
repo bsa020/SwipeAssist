@@ -1,0 +1,19 @@
+When launching the app for the first time, you get a simple login screen. To
+streamline this interface with our back-end, Firebase, we use FirebaseUI
+integration. This enables email and Google sign-in for now, and also
+future-proofs the app by providing the framework to later add other
+authentication options like Facebook and Instagram.
+
+After signing in, you will get to the main menu, with three modules. One to get
+advice from other users, one to provide feedback, and the Advice Portal to view
+previously received feedback.
+
+The back-end is intricately designed, <SOMETHING SOMETHING>
+
+The user flow from sign-in screen to main menu to the different menus
+(fragments) are fairly complicated on our end, but is easy for the user.
+
+So this is the "Get advice" mode. Here, the user can provide a first name,
+category for the post and what occastion it's for, for instance a wedding,
+hiking trip etc. Once a photo is selected, you can preview it before sharing it
+with the rest of the huge, already existing community.

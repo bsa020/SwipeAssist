@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -11,24 +12,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class loginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        createSignInIntent();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        Log.d("bhsand", "onCreate:" + storage.toString());
     }
 
     public void createSignInIntent() {
-        // [START auth_fui_create_intent]
-        // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -38,6 +40,9 @@ public class loginActivity extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
+                        .setTheme(R.style.Theme_MaterialComponents_NoActionBar)
+                        .setLogo(R.drawable.logo_white)
                         .build(),
                 RC_SIGN_IN);
         // [END auth_fui_create_intent]
@@ -54,6 +59,14 @@ public class loginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Intent intent = new Intent(this, StartupScreen.class);
+                if (user != null){
+                    String email = user.getEmail();
+                    String name = user.getDisplayName();
+                    intent.putExtra("userEmail", email);
+                    intent.putExtra("userName", name);
+                }
+                startActivity(intent);
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the

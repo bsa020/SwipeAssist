@@ -21,6 +21,10 @@
             "package_name": "com.comp3330.swipeassist",
             "certificate_hash": "a0c5087eb29dcc6986b8f6084b988829545aed94"
           }
+        },
+        {
+          "client_id": "904075537167-qbqf5ier5mm8oenid1fooc0h621rdkca.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

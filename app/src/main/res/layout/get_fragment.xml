@@ -1,12 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="40dp">
+
+
+    <EditText
+        android:id="@+id/editNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="@string/name_label"
+        android:inputType="textPersonName" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="get_fragment"
+        android:id="@+id/categoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editNameText"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/category_label"
+        android:textSize="18sp" />
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_text"
+        android:layout_below="@id/editNameText"
+        android:layout_alignEnd="@id/editNameText"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+    </Spinner>
+
+    <EditText
+        android:id="@+id/editOccasionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/occasion_label"
+        android:layout_below="@id/categoryLabel"
+        android:inputType="text"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/occasionPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/occasion_prompt"
+        android:layout_alignEnd="@id/editOccasionText"
+        android:layout_below="@id/editOccasionText"
+        android:layout_marginBottom="20dp"/>
+
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/occasionPrompt"
+        android:layout_alignTop="@id/occasionPrompt"
+        android:layout_marginStart="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/myImageViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerInParent="true"
+            android:text="@string/image_preview" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose picture"
+
+        android:layout_below="@id/occasionPrompt"
+        android:layout_alignLeft="@+id/occasionPrompt"
+        android:layout_alignRight="@+id/occasionPrompt"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
         />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:textSize="36sp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/image_layout"
+        android:text="@string/upload_info"
+        android:clickable="true"
+        />
+
+
+
+</RelativeLayout>
